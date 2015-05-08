@@ -1,0 +1,15 @@
+[Unit]
+Description=HAProxy Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill haproxy1
+ExecStartPre=-/usr/bin/docker rm haproxy1
+ExecStartPre=/usr/bin/docker pull haproxy:1.5
+ExecStart=/usr/bin/docker run --name haproxy1 haproxy:1.5
+ExecStop=/usr/bin/docker stop haproxy1
+
+[X-Fleet]
+Conflicts=haproxy@*.service

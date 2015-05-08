@@ -1,0 +1,12 @@
+[Unit]
+Description=PostgreSQL
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill pg-master
+ExecStartPre=-/usr/bin/docker rm pg-master
+ExecStartPre=/usr/bin/docker pull postgres:9.4
+ExecStart=/usr/bin/docker run --name pg-master -e POSTGRES_PASSWORD=secretpass postgres:9.4 
+ExecStop=/usr/bin/docker stop pg-master
